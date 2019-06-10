@@ -1,0 +1,55 @@
+version: '3.7'
+
+services:
+  webserver:
+    image: nginx:alpine
+    volumes:
+      - ../../var/application/:/var/www
+      - ./phpdocker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    environment:
+      - VIRTUAL_HOST=www.openmage.test
+      - VIRTUAL_PORT=8080
+    env_file:
+      - magento.env
+    links:
+      - db
+      - php-fpm
+    ports:
+      - "8080:80"
+
+  php-fpm:
+    build:
+      context: ../../container/php/
+    volumes:
+      - ../../var/application/:/var/www:delegated
+      - ../../var/cache/composer/:/root/.composer/:delegated
+      - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.3/fpm/conf.d/99-overrides.ini
+    links:
+      - db
+
+  db:
+    image: mysql:5.7
+#    volumes:
+#      - db-data:/var/lib/mysql/data
+    environment:
+      - VIRTUAL_HOST=mysql.openmage.test
+    env_file:
+      - magento.env
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8580:80"
+    environment:
+      - VIRTUAL_HOST=phpmyadmin.openmage.test
+      - VIRTUAL_PORT=8580
+    links:
+      - db
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+volumes:
+  db-data:
