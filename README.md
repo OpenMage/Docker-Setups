@@ -12,6 +12,9 @@ This repository is a collection of different approaches to use docker and docker
 This Setup is approaching setting up a demo store in a simplified approach,
 which does not have the intend to be used for development.
 
+This setup makes use of the docker container jwilder/nginx-proxy which is used to easy map Domains to containers.
+You will also need to point www.openmage.test to localhost.
+
 starting up and installing OpenMage afterwards
 ```
 docker-compose -f compose/static_demo/docker-compose.yaml up -d
