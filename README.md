@@ -21,6 +21,13 @@ docker-compose -f compose/static_demo/docker-compose.yaml up -d
 docker-compose -f compose/static_demo/docker-compose.yaml exec php-fpm /usr/local/bin/magerun install --dbHost="db" --dbUser="magento" --dbPass="magento" --dbName="magento" --installSampleData=yes --useDefaultConfigParams=yes --magentoVersionByName="openmage-lts-1.9.4.x" --installationFolder="/var/www/" --baseUrl="http://www.openmage.test/"
 ```
 
+### development setup - sftp
+
+in `compose/development_sftp` you find a simple example which can be used for development.
+Instead of mounting volumes or special sync solutions,
+it is just providing an sftp server which can be used by all common IDEs
+
+
 ## Development snippets
 
 rebuild php-fpm package
