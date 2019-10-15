@@ -1,4 +1,4 @@
-FROM php:7.3-fpm
+FROM php:7.3-fpm-buster
 RUN apt-get update && apt-get install -y \
   cron \
   git \
@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
   libpng-dev \
   libxslt1-dev \
   lsof \
-  mysql-client \
+  default-mysql-client \
   vim \
   libzip-dev \
   zip
@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y \
 RUN docker-php-ext-configure \
   gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
 
-RUN docker-php-ext-install \
+RUN docker-php-ext-install -j$(nproc) \
   bcmath \
   gd \
   intl \
@@ -47,7 +47,7 @@ RUN curl -o magerun https://files.magerun.net/n98-magerun.phar && \
     cp ./magerun /usr/local/bin/ && \
     rm ./magerun && \
     apt-get update && \
-    apt-get install -qy mysql-client
+    apt-get install -qy default-mysql-client
 
 
 #COPY conf/php-fpm.conf /usr/local/etc/php-fpm.d/
