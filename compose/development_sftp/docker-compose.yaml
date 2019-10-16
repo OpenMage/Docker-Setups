@@ -36,6 +36,7 @@ services:
       - VIRTUAL_HOST=mysql.openmage.test
     env_file:
       - magento.env
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     environment:
@@ -43,6 +44,25 @@ services:
       - VIRTUAL_PORT=80
     links:
       - db
+
+  sftp:
+    image: atmoz/sftp:alpine
+    volumes:
+      - magento-data:/home/sftp/var/www
+    #  - type: volume
+    #  - source: ./ssh/ssh_host_rsa_key
+    #  - target: /etc/ssh/ssh_host_rsa_key
+    #  - ./ssh/ssh_host_rsa_key:/etc/ssh/ssh_host_rsa_key:delegated
+    #  - ./ssh/ssh_host_rsa_key.pub:/etc/ssh/ssh_host_rsa_key.pub:delegated
+    depends_on:
+      - php-fpm
+    ports:
+      - "22:22"
+    #environment:
+    #  - VIRTUAL_HOST=www.openmage.test
+    #  - VIRTUAL_PORT=2222
+    #command: www-data:$1$FzEALFS2$yUdwhXqgO1E.lUOXyheNH/:e:1001 # your-password
+    command: sftp:your-password:1000 # your-password
 
   nginx-proxy:
     image: jwilder/nginx-proxy

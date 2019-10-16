@@ -25,7 +25,11 @@ docker-compose -f compose/static_demo/docker-compose.yaml exec php-fpm /usr/loca
 
 in `compose/development_sftp` you find a simple example which can be used for development.
 Instead of mounting volumes or special sync solutions,
-it is just providing an sftp server which can be used by all common IDEs
+it is just providing an sftp server which can be used by all common IDEs.
+
+For details how to work with, configure it, and customize the sftp container, please look into https://hub.docker.com/r/atmoz/sftp
+
+currently the container does expose itself directly on port 22 and does not go through the nginx-proxy, so you cant have multiple of them running yet.
 
 
 ## Development snippets
