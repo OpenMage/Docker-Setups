@@ -20,8 +20,6 @@ services:
       context: ../../container/php/
     volumes:
       - magento-data:/var/www
-#      - ../../var/application/:/var/www:delegated
-#      - ../../var/cache/composer/:/root/.composer/:delegated
       - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.3/fpm/conf.d/99-overrides.ini
     depends_on:
       - db
@@ -30,8 +28,6 @@ services:
 
   db:
     image: mysql:5.7
-#    volumes:
-#      - db-data:/var/lib/mysql/data
     environment:
       - VIRTUAL_HOST=mysql.openmage.test
     env_file:
@@ -49,19 +45,10 @@ services:
     image: atmoz/sftp:alpine
     volumes:
       - magento-data:/home/sftp/var/www
-    #  - type: volume
-    #  - source: ./ssh/ssh_host_rsa_key
-    #  - target: /etc/ssh/ssh_host_rsa_key
-    #  - ./ssh/ssh_host_rsa_key:/etc/ssh/ssh_host_rsa_key:delegated
-    #  - ./ssh/ssh_host_rsa_key.pub:/etc/ssh/ssh_host_rsa_key.pub:delegated
     depends_on:
       - php-fpm
     ports:
       - "22:22"
-    #environment:
-    #  - VIRTUAL_HOST=www.openmage.test
-    #  - VIRTUAL_PORT=2222
-    #command: www-data:$1$FzEALFS2$yUdwhXqgO1E.lUOXyheNH/:e:1001 # your-password
     command: sftp:your-password:1000 # your-password
 
   nginx-proxy:
